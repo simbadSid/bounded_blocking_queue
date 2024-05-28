@@ -47,7 +47,7 @@ int test_N_enqueue_N_dequeue(const unsigned &n_enqueue)
     std::vector<DATA_TYPE> allData = std::vector<DATA_TYPE>(n_enqueue);
 
     // Enqueue all
-    for (int i=0; i<n_enqueue; ++i)
+    for (unsigned i=0; i<n_enqueue; ++i)
     {
         DATA_TYPE d = generate_data();
         queue->enqueue(d);
@@ -56,7 +56,7 @@ int test_N_enqueue_N_dequeue(const unsigned &n_enqueue)
 
     // Dequeue all
     bool is_correct = true;
-    for (int i=0; i<n_enqueue; ++i)
+    for (unsigned i=0; i<n_enqueue; ++i)
     {
         DATA_TYPE d = queue->dequeue();
         is_correct = (is_correct & (d==allData[i]));
@@ -125,8 +125,8 @@ int test_N_enqueue_dequeue_rnd_order(const unsigned &n_enqueue)
 void producer(BoundedBlockingQueue<DATA_TYPE>* queue) {
     for (int i = 0; i < 10; ++i)
     {
-        std::cout << "Produced: " << i << std::endl;
         DATA_TYPE x = generate_data();
+        std::cout << "Produced: " << x << std::endl;
         queue->enqueue(x);
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
@@ -151,15 +151,15 @@ int test_parallel_N_producer_N_consumer(const unsigned &n_producer, const unsign
     vector_consumerThread   .reserve(n_producer);
 
     // Create and launch threads
-    for (int i=0; i<n_producer; i++)
+    for (unsigned i=0; i<n_producer; i++)
         vector_prodThread[i] = std::thread(producer, std::ref(queue));
-    for (int i=0; i<n_consumer; i++)
+    for (unsigned i=0; i<n_consumer; i++)
         vector_consumerThread[i] = std::thread(consumer, std::ref(queue));
 
     // Wait for threads to finish and wipe out
-    for (int i=0; i<n_producer; i++)
+    for (unsigned i=0; i<n_producer; i++)
         vector_prodThread[i].join();
-    for (int i=0; i<n_consumer; i++)
+    for (unsigned i=0; i<n_consumer; i++)
         vector_consumerThread[i].join();
 
     bool test = check_correctness(queue);
