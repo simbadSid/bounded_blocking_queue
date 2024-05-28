@@ -122,8 +122,9 @@ int test_N_enqueue_dequeue_rnd_order(const unsigned &n_enqueue)
         return -1;
 }
 
-void producer(BoundedBlockingQueue<DATA_TYPE>* queue) {
-    for (int i = 0; i < 10; ++i)
+void producer(BoundedBlockingQueue<DATA_TYPE>* queue)
+{
+    for (unsigned i = 0; i < 10; ++i)
     {
         DATA_TYPE x = generate_data();
         std::cout << "Produced: " << x << std::endl;
@@ -132,34 +133,36 @@ void producer(BoundedBlockingQueue<DATA_TYPE>* queue) {
     }
 }
 
-void consumer(BoundedBlockingQueue<DATA_TYPE>* queue) {
-    for (int i = 0; i < 10; ++i) {
+void consumer(BoundedBlockingQueue<DATA_TYPE>* queue)
+{
+    for (unsigned i = 0; i < 10; ++i)
+    {
         DATA_TYPE item = queue->dequeue();
         std::cout << "Consumed: " << item << std::endl;
     }
 }
 
-int test_parallel_N_producer_N_consumer(const unsigned &n_producer, const unsigned &n_consumer)
+int test_parallel_N_producer_N_consumer(const unsigned &n)
 {
     std::cout << "Begin RUN!" << std::endl;
 
     auto *queue = new BoundedBlockingQueue<DATA_TYPE>();
-    std::vector<std::thread> vector_prodThread      (n_producer);
-    std::vector<std::thread> vector_consumerThread  (n_consumer);
+    std::vector<std::thread> vector_prodThread      (n);
+    std::vector<std::thread> vector_consumerThread  (n);
 
-    vector_prodThread       .reserve(n_producer);
-    vector_consumerThread   .reserve(n_producer);
+    vector_prodThread       .reserve(n);
+    vector_consumerThread   .reserve(n);
 
     // Create and launch threads
-    for (unsigned i=0; i<n_producer; i++)
+    for (unsigned i=0; i<n; i++)
         vector_prodThread[i] = std::thread(producer, std::ref(queue));
-    for (unsigned i=0; i<n_consumer; i++)
+    for (unsigned i=0; i<n; i++)
         vector_consumerThread[i] = std::thread(consumer, std::ref(queue));
 
     // Wait for threads to finish and wipe out
-    for (unsigned i=0; i<n_producer; i++)
+    for (unsigned i=0; i<n; i++)
         vector_prodThread[i].join();
-    for (unsigned i=0; i<n_consumer; i++)
+    for (unsigned i=0; i<n; i++)
         vector_consumerThread[i].join();
 
     bool test = check_correctness(queue);
