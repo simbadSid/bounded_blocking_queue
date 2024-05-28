@@ -3,5 +3,5 @@
 
 int main()
 {
-    return test_creation_destruction();
+    return test_N_enqueue_N_dequeue(1);
 }

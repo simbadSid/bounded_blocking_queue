@@ -179,9 +179,8 @@ foreach(testKind ${TEST_KIND_LIST})
 
     message(STATUS "\tTest kind: \"${testKind}\"")
     file(GLOB_RECURSE testFileList ${DIR_TEST}/${testKind}/*${EXTENSION_SRC})
-
     if (testFileList)
-        GENERATE_TESTS(${testFileList})
+        GENERATE_TESTS("${testFileList}")
     else()
         message(STATUS "\t\t*****No test class found")
     endif()
