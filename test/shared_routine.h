@@ -18,7 +18,8 @@ std::mt19937 gen(rd());
 DATA_TYPE generate_data()
 {
     //TODO
-    return 45;
+    std::uniform_int_distribution<> dis(0, 10000);
+    return dis(gen);
 }
 
 bool check_correctness(BoundedBlockingQueue<DATA_TYPE> *queue)
@@ -87,12 +88,12 @@ int test_N_enqueue_dequeue_rnd_order(const unsigned &n_enqueue)
         if ((n_remainingEnqueue > 0) && (n_remainingDequeue > 0))
         {
             int bit = dis(gen);
-            if (bit)
+            if (bit or (queue->size() == 0))
             {
                 queue->enqueue(generate_data());
                 -- n_remainingEnqueue;
             }
-            else
+            else if (n_remainingDequeue < n_remainingEnqueue)
             {
                 queue->dequeue();
                 -- n_remainingDequeue;
