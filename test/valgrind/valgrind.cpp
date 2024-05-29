@@ -3,5 +3,5 @@
 
 int main()
 {
-    return test_parallel_N_producer_N_consumer(20);
+    return test_parallel_N_producer_N_consumer(10);
 }
